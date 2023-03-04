@@ -1,18 +1,24 @@
 (function () {
   var DE = window.DiscourseEmbed || {};
-  var comments = document.getElementById("discourse-comments");
-  var iframe = document.createElement("iframe");
 
   [
     "discourseUrl",
     "discourseEmbedUrl",
     "discourseUserName",
     "discourseReferrerPolicy",
+    "discourseCommentsId"
   ].forEach(function (i) {
     if (window[i]) {
       DE[i] = DE[i] || window[i];
     }
   });
+  
+  if (!DE.hasOwnProperty("discourseCommentsId")) {
+    DE.discourseCommentsId = "discourse-comments";
+  }
+
+  var comments = document.getElementById(DE.discourseCommentsId);
+  var iframe = document.createElement("iframe");
 
   var queryParams = {};
 
@@ -32,10 +38,6 @@
 
   if (DE.topicId) {
     queryParams.topic_id = DE.topicId;
-  }
-
-  if (DE.className) {
-    queryParams.class_name = DE.className;
   }
 
   var src = DE.discourseUrl + "embed/comments";
